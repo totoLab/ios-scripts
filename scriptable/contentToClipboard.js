@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: cyan; icon-glyph: magic; share-sheet-inputs: file-url;
+// icon-color: cyan; icon-glyph: copy; share-sheet-inputs: file-url;
 function showOnIOS(text) {
     alert = new Alert();
     alert.message = text;
