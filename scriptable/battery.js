@@ -33,10 +33,16 @@ function joinDictionaryFields(dictionary) {
     return ret.trimEnd();
 }
 
-function showOnIOS(text) {
-    alert = new Alert();
+async function showAndCopyOnIOS(title, text) {
+    let alert = new Alert();
+    alert.addAction("Copy");
+    alert.addCancelAction("Cancel");
+    alert.title = title;
     alert.message = text;
-    alert.present();
+    let idx = await alert.presentSheet();
+    if (idx == 0) {
+        Pasteboard.copy(text);
+    }
 }
 
 // starts here
@@ -57,6 +63,6 @@ systemData = {
     "Cicles count": ciclesCount,
 }
 
-title = "Battery stats:\n";
+title = "Battery stats";
 finalMessage = joinDictionaryFields(systemData);
-showOnIOS(title + finalMessage);
+showOnIOS(title, finalMessage);

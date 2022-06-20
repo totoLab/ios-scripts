@@ -2,15 +2,19 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: deep-purple; icon-glyph: folder-open;
 // share-sheet-inputs: file-url;
-function showOnIOS(text) {
-    alert = new Alert();
+async function showOnIOS(text) {
+    let alert = new Alert();
+    alert.addAction("Copy");
+    alert.addCancelAction("Cancel"); 
     alert.message = text;
-    alert.present();
+    let idx = await alert.presentSheet();
+    if (idx == 0) {
+        Pasteboard.copy(text);
+    }
 }
 
 function antiBasename(path) {
   return path.substring(0, path.lastIndexOf("/"))
-
 }
 
 path = JSON.parse(JSON.stringify(args.fileURLs[0]));
