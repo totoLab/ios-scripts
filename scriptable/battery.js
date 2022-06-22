@@ -2,6 +2,8 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: green; icon-glyph: battery-half;
 // share-sheet-inputs: file-url;
+let lib = importModule('libIOS');
+  
 fields = {  
     "ciclesCount":"com.apple.ioreport.BatteryCycleCount",  
     "actualCapacity":"com.apple.power.battery.raw_max_capacity",  
@@ -33,20 +35,8 @@ function joinDictionaryFields(dictionary) {
     return ret.trimEnd();
 }
 
-async function showAndCopyOnIOS(title, text) {
-    let alert = new Alert();
-    alert.addAction("Copy");
-    alert.addCancelAction("Cancel");
-    alert.title = title;
-    alert.message = text;
-    let idx = await alert.presentSheet();
-    if (idx == 0) {
-        Pasteboard.copy(text);
-    }
-}
-
 // starts here
-path = JSON.parse(JSON.stringify(args.fileURLs[0]));
+path = lib.extractPathFromArgs(args);
 content = FileManager.local().readString(path);
 
 ciclesCount = parseInfo(content, fields["ciclesCount"], 25, types["int"]);
@@ -65,4 +55,4 @@ systemData = {
 
 title = "Battery stats";
 finalMessage = joinDictionaryFields(systemData);
-showOnIOS(title, finalMessage);
+lib.showAndCopyOnIOS(title, finalMessage);

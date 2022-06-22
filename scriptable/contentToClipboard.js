@@ -1,13 +1,9 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: cyan; icon-glyph: copy; share-sheet-inputs: file-url;
-function showOnIOS(text) {
-    alert = new Alert();
-    alert.message = text;
-    alert.present();
-}
+let lib = importModule('libIOS');
 
-path = JSON.parse(JSON.stringify(args.fileURLs[0]));
+path = lib.extractPathFromArgs(args);
 content = FileManager.local().readString(path);
 Pasteboard.copy(content);
-showOnIOS("Copied successfully");
+lib.showOnIOS("Copied successfully");
