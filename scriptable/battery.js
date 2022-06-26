@@ -4,6 +4,17 @@
 // share-sheet-inputs: file-url;
 let lib = importModule('libIOS');
   
+fields = {  
+    "ciclesCount":"com.apple.ioreport.BatteryCycleCount",  
+    "actualCapacity":"com.apple.power.battery.raw_max_capacity",  
+    "designCapacity": "com.apple.power.battery.design_capacity",
+    "precomputedCapacityPercent": "com.apple.power.battery.MaximumCapacityPercent", 
+}
+
+types = {
+    "int": /\d+/g,
+}
+
 function computeCapacityPercent(max, current) {  
     raw = current * 100 / max;
     return raw.toFixed(2);
