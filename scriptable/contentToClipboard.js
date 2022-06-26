@@ -4,6 +4,6 @@
 let lib = importModule('libIOS');
 
 path = lib.extractPathFromArgs(args);
-content = FileManager.local().readString(path);
+content = lib.readContentFrom(path);  
 Pasteboard.copy(content);
 lib.showOnIOS("Copied successfully");
