@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: wrench;
 module.exports.showOnIOS = (text) => {
-	alert = new Alert();
+    alert = new Alert();
     alert.message = text;
     alert.present();
 }
@@ -21,10 +21,18 @@ module.exports.showAndCopyOnIOS = async (title, text) => {
 
 
 module.exports.antiBasename = (path) => {
-  return path.substring(0, path.lastIndexOf("/"))
+    return path.substring(0, path.lastIndexOf("/"))
+}
+
+module.exports.basename = (path) => {  
+    return path.substring(path.lastIndexOf("/") + 1);
 }
 
 module.exports.extractPathFromArgs = (arg) => {
     path = JSON.parse(JSON.stringify(arg.fileURLs[0]));    
     return path;
+}
+
+module.exports.readContentFrom = (path) => {  
+    return FileManager.local().readString(path);
 }

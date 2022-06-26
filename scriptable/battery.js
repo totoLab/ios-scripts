@@ -35,35 +35,33 @@ function joinDictionaryFields(dictionary) {
     return ret.trimEnd();
 }
 
-// starts here
-fields = {  
-    "ciclesCount": "com.apple.ioreport.BatteryCycleCount",  
-    "actualCapacity": "com.apple.power.battery.raw_max_capacity",  
-    "designCapacity": "com.apple.power.battery.design_capacity",
-    "precomputedCapacityPercent": "com.apple.power.battery.MaximumCapacityPercent", 
+function main() {  
+    let path = lib.extractPathFromArgs(args);
+    let filename = lib.basename(path);
+    if (!(filename.includes("log-aggregated"))) {
+        lib.showOnIOS("Can\'t parse file. Must contain log-aggregated* in filename");
+    } else {
+        
+        content = lib.readContentFrom(path);
+        
+        ciclesCount = parseInfo(content, fields["ciclesCount"], 25, types["int"]);
+        actualCapacity = parseInfo(content, fields["actualCapacity"], 25, types["int"]);
+        designCapacity = parseInfo(content, fields["designCapacity"], 25, types["int"]);
+        actualCapacityPercent = computeCapacityPercent(designCapacity, actualCapacity);
+        precomputedCapacityPercent = parseInfo(content, fields["precomputedCapacityPercent"], 25, types["int"]);
+        
+        systemData = {
+            "Design capacity mAh": designCapacity,
+            "Actual capacity mAh": actualCapacity,
+            "Actual capacity %": actualCapacityPercent,
+            "Pre-calc capacity %": precomputedCapacityPercent,
+            "Cicles count": ciclesCount,
+        }
+        
+        title = "Battery stats";
+        finalMessage = joinDictionaryFields(systemData);
+        lib.showAndCopyOnIOS(title, finalMessage);
+    }
 }
 
-types = {
-    "int": /\d+/g,
-}
-
-path = lib.extractPathFromArgs(args);
-content = FileManager.local().readString(path);
-
-ciclesCount = parseInfo(content, fields["ciclesCount"], 25, types["int"]);
-actualCapacity = parseInfo(content, fields["actualCapacity"], 25, types["int"]);
-designCapacity = parseInfo(content, fields["designCapacity"], 25, types["int"]);
-actualCapacityPercent = computeCapacityPercent(designCapacity, actualCapacity);
-precomputedCapacityPercent = parseInfo(content, fields["precomputedCapacityPercent"], 25, types["int"]);
-
-systemData = {
-    "Design capacity mAh": designCapacity,
-    "Actual capacity mAh": actualCapacity,
-    "Actual capacity %": actualCapacityPercent,
-    "Pre-calc capacity %": precomputedCapacityPercent,
-    "Cicles count": ciclesCount,
-}
-
-title = "Battery stats";
-finalMessage = joinDictionaryFields(systemData);
-lib.showAndCopyOnIOS(title, finalMessage);
+main();
