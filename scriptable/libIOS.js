@@ -1,13 +1,13 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: wrench;
-module.exports.showOnIOS = (text) => {
+const showOnIOS = (text) => {
     alert = new Alert();
     alert.message = text;
     alert.present();
 }
 
-module.exports.showAndCopyOnIOS = async (title, text) => {
+const showAndCopyOnIOS = async (title, text) => {
     let alert = new Alert();
     alert.addAction("Copy");
     alert.addCancelAction("Cancel");
@@ -20,19 +20,21 @@ module.exports.showAndCopyOnIOS = async (title, text) => {
 }
 
 
-module.exports.antiBasename = (path) => {
+const antiBasename = (path) => {
     return path.substring(0, path.lastIndexOf("/"))
 }
 
-module.exports.basename = (path) => {  
+const basename = (path) => {  
     return path.substring(path.lastIndexOf("/") + 1);
 }
 
-module.exports.extractPathFromArgs = (arg) => {
+const extractPathFromArgs = (arg) => {
     path = JSON.parse(JSON.stringify(arg.fileURLs[0]));    
     return path;
 }
 
-module.exports.readContentFrom = (path) => {  
+const readContentFrom = (path) => {  
     return FileManager.local().readString(path);
 }
+
+module.exports = {showOnIOS, showAndCopyOnIOS, antiBasename, basename, extractPathFromArgs, readContentFrom};
