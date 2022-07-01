@@ -2,7 +2,7 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: red; icon-glyph: wrench;
 module.exports.showOnIOS = (text) => {
-    alert = new Alert();
+    alert = new Alert();
     alert.message = text;
     alert.present();
 }
