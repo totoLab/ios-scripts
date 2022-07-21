@@ -49,9 +49,11 @@ def main(config_file):
     fields = config["fields"]
 
     device = sys.argv[1]
-    lib.check_chosen_device(config["storage"], device) # raises an error if choice doesn't exist
+    storage_config = config["storage"]
+    lib.check_chosen_device(storage_config, device) # raises an error if choice doesn't exist
 
-    info_d = extract_info(device, fields)
+    device_path = os.path.expanduser(storage_config[device])
+    info_d = extract_info(device_path, fields)
     ordered_data = lib.order_dict(info_d)
     #lib.dict_prettify(ordered_data) # prints dictionary in yaml-like formatting
     for field in fields:
