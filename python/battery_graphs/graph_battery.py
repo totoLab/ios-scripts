@@ -1,5 +1,7 @@
 import os
 import re
+import lib
+
 fields = {
     "ciclesCount":"com.apple.ioreport.BatteryCycleCount",  
     "actualCapacity":"com.apple.power.battery.raw_max_capacity",
