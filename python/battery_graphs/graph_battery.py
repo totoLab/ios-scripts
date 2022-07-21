@@ -2,6 +2,8 @@ import os
 import re
 import lib
 
+config_file = os.path.expanduser("~/.config/ios-battery-graph.conf")
+
 fields = {
     "ciclesCount":"com.apple.ioreport.BatteryCycleCount",  
     "actualCapacity":"com.apple.power.battery.raw_max_capacity",
@@ -45,3 +47,13 @@ def extract_info(directory):
                     raise RuntimeError("Why are there 2 files with the same date John?")
 
     return ret
+
+def main(config_file):
+    config = lib.extract_config(config_file)
+    info_d = extract_info(config["storage"])
+    ordered_data = lib.order_dict(info_d)
+    #lib.dict_prettify(ordered_data) # prints dictionary in yaml-like formatting
+    for field in fields:
+        lib.graph_info_field(ordered_data, field)
+
+main(config_file)
