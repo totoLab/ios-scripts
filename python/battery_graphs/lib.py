@@ -18,13 +18,22 @@ def extract_config(config_file):
 def graph_info_field(d, field):
     lists = sorted(d.items()) # sorted by key, return a list of tuples
     
-    x, values = zip(*lists) # unpack a list of pairs into two tuples
+    keys, values = zip(*lists) # unpack a list of pairs into two tuples
     
+    x = ()
+    for key in keys:
+        vertical_key = ""
+        for char in key:
+            vertical_key += char + "\n"
+
+        x += vertical_key,
+
+    fig, ax = plt.subplots()
+    fig.set_tight_layout(True)
+
     y = ()
     for value in values:
         y += int(value[field]),
-
-    plt.gcf().autofmt_xdate() # date autoformatting
 
     plt.title(field)
     plt.plot(x, y)
