@@ -1,7 +1,6 @@
 import os
 import re
 import lib
-import sys
 
 config_file = os.path.expanduser("~/.config/ios-battery-graph.conf")
 
@@ -48,9 +47,8 @@ def main(config_file):
     config = lib.extract_config(config_file)
     fields = config["fields"]
 
-    device = sys.argv[1]
     storage_config = config["storage"]
-    lib.check_chosen_device(storage_config, device) # raises an error if choice doesn't exist
+    device = lib.check_chosen_device(storage_config) # raises an error if choice doesn't exist
 
     device_path = os.path.expanduser(storage_config[device])
     info_d = extract_info(device_path, fields)

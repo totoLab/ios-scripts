@@ -2,6 +2,7 @@ from datetime import datetime
 from collections import OrderedDict
 import matplotlib.pylab as plt
 import re
+import sys
 
 # configuration stuff
 def valid_config(config):
@@ -39,13 +40,19 @@ def extract_config(config_file):
     if valid_config(ret):   
         return ret
 
-def check_chosen_device(available_devices, choice=None):
-    if choice is None:
-        raise RuntimeError("No option was given as argument to the command. Retry.")
+def check_chosen_device(available_devices):
+    args = sys.argv
+    if len(args) < 2:
+        if len(available_devices) > 1:
+            raise RuntimeError("No option was given as argument to the command. Retry.")
+        else:
+            choice = list(available_devices.keys())[0]
+    else:
+        choice = args[1].strip()
+        if choice not in available_devices:
+            raise RuntimeError(f"{choice} is not an available device, if you have the logs, specify in the config file how to reach them.")
 
-    choice = choice.strip()
-    if choice not in available_devices:
-        raise RuntimeError(f"{choice} is not an available device, if you have the logs, specify in the config file how to reach them.")
+    return choice
 
 # graphics
 def graph_info_field(d, field):
