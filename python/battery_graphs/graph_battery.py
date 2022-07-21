@@ -1,6 +1,7 @@
 import os
 import re
 import lib
+import sys
 
 config_file = os.path.expanduser("~/.config/ios-battery-graph.conf")
 
@@ -46,7 +47,11 @@ def extract_info(directory, fields):
 def main(config_file):
     config = lib.extract_config(config_file)
     fields = config["fields"]
-    info_d = extract_info(config["storage"]["storage"], fields) #TODO support multiple locations of logs (different devices)
+
+    device = sys.argv[1]
+    lib.check_chosen_device(config["storage"], device) # raises an error if choice doesn't exist
+
+    info_d = extract_info(device, fields)
     ordered_data = lib.order_dict(info_d)
     #lib.dict_prettify(ordered_data) # prints dictionary in yaml-like formatting
     for field in fields:

@@ -39,6 +39,14 @@ def extract_config(config_file):
     if valid_config(ret):   
         return ret
 
+def check_chosen_device(available_devices, choice=None):
+    if choice is None:
+        raise RuntimeError("No option was given as argument to the command. Retry.")
+
+    choice = choice.strip()
+    if choice not in available_devices:
+        raise RuntimeError(f"{choice} is not an available device, if you have the logs, specify in the config file how to reach them.")
+
 # graphics
 def graph_info_field(d, field):
     lists = sorted(d.items()) # sorted by key, return a list of tuples
