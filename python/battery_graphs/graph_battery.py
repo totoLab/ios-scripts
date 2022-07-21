@@ -4,11 +4,6 @@ import lib
 
 config_file = os.path.expanduser("~/.config/ios-battery-graph.conf")
 
-fields = {
-    "ciclesCount":"com.apple.ioreport.BatteryCycleCount",  
-    "actualCapacity":"com.apple.power.battery.raw_max_capacity",
-}
-
 def extract_date(filename):
     date_regex = "(?:19\d{2}|20[0-2][0-9]|2020)-(?:0[1-9]|1[012])-(?:0[1-9]|[12][0-9]|3[01])"
     match = re.search(date_regex, filename).span()
@@ -24,7 +19,7 @@ def value_of_field(content, field, offset=25):
     match = re.search("[0-9]+", substring).span()
     return substring[match[0]:match[1]]
 
-def parse_content(content):
+def parse_content(content, fields):
     ret = {}
     for name in fields:
         field = fields[name]
@@ -32,7 +27,7 @@ def parse_content(content):
 
     return ret
 
-def extract_info(directory):
+def extract_info(directory, fields):
     ret = {}
     for filename in os.listdir(directory):
         if filename.endswith(".ips"):
@@ -40,7 +35,7 @@ def extract_info(directory):
             with open(path, "r") as f:
                 content = f.read()
                 date = extract_date(filename)
-                info = parse_content(content)
+                info = parse_content(content, fields)
                 if date not in ret:
                     ret[date] = info
                 else:
@@ -50,7 +45,8 @@ def extract_info(directory):
 
 def main(config_file):
     config = lib.extract_config(config_file)
-    info_d = extract_info(config["storage"])
+    fields = config["fields"]
+    info_d = extract_info(config["storage"]["storage"], fields) #TODO support multiple locations of logs (different devices)
     ordered_data = lib.order_dict(info_d)
     #lib.dict_prettify(ordered_data) # prints dictionary in yaml-like formatting
     for field in fields:
