@@ -1,18 +1,43 @@
 from datetime import datetime
 from collections import OrderedDict
 import matplotlib.pylab as plt
+import re
 
 # configuration stuff
+def valid_config(config):
+    minimum_config_options = ["storage", "fields"]
+    missing_options = []
+    for option in minimum_config_options:
+        if option not in config.keys():
+            missing_options.append(option)
+
+    if len(missing_options) > 0: 
+        raise RuntimeError(f"Configuration is missing some fields: {missing_options}")
+    return True
+
 def extract_config(config_file):
     ret = {}
     with open(config_file, "r") as f:
+        current_config = None
         for line in f.readlines():
-            if "=" in line:
-                config, value = tuple([x.strip() for x in line.split("=")])
+            line = line.strip()
+            
+            match = re.search("\[([[a-z]|[A-Z])+\]", line)
+            if match is not None:
+                start, end = match.span()
+                current_config = line[start+1:end-1].strip()
+            else:
+                if current_config is not None:
+                    if "=" in line:
+                        option, value = tuple([x.strip() for x in line.split("=")])
+                        if current_config not in ret:
+                            ret[current_config] = {}
+                        ret[current_config].update({option: value}) 
+                else:
+                    raise RuntimeError("Configuration file is not valid.")
 
-                ret[config] = value
-
-    return ret
+    if valid_config(ret):   
+        return ret
 
 # graphics
 def graph_info_field(d, field):
