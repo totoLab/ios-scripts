@@ -29,10 +29,10 @@ def extract_config(config_file):
                 current_config = line[start+1:end-1].strip()
             else:
                 if current_config is not None:
+                    if current_config not in ret:
+                        ret[current_config] = {}
                     if "=" in line:
                         option, value = tuple([x.strip() for x in line.split("=")])
-                        if current_config not in ret:
-                            ret[current_config] = {}
                         ret[current_config].update({option: value}) 
                 else:
                     raise RuntimeError("Configuration file is not valid.")
