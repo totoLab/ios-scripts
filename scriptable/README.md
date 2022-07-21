@@ -9,3 +9,6 @@ Content of a file to the clipboard, I believe there is a way to do the same in i
 
 ### getFilePath.js
 Self-explanatory.
+
+### libIOS.js
+Set of functions often used in other modules.
