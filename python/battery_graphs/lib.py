@@ -1,3 +1,19 @@
+from datetime import datetime
+from collections import OrderedDict
+import matplotlib.pylab as plt
+
+# configuration stuff
+def extract_config(config_file):
+    ret = {}
+    with open(config_file, "r") as f:
+        for line in f.readlines():
+            if "=" in line:
+                config, value = tuple([x.strip() for x in line.split("=")])
+
+                ret[config] = value
+
+    return ret
+
 # graphics
 def graph_info_field(d, field):
     lists = sorted(d.items()) # sorted by key, return a list of tuples
