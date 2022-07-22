@@ -6,8 +6,9 @@ config_file = os.path.expanduser("~/.config/ios-battery-graph.conf")
 
 def extract_date(filename):
     date_regex = "(?:19\d{2}|20[0-2][0-9]|2020)-(?:0[1-9]|1[012])-(?:0[1-9]|[12][0-9]|3[01])"
-    match = re.search(date_regex, filename).span()
-    return filename[match[0]:match[1]]
+    substring = lib.regex_span(date_regex, filename)
+    if substring is None: raise RuntimeError(f"Couldn't find a date in the filename {filename}")
+    return substring
 
 def value_of_field(content, field, offset=25):
     to_search = "<key>" + field + "</key>"
@@ -15,9 +16,10 @@ def value_of_field(content, field, offset=25):
     if position == -1: raise RuntimeError(f"Can't find field {field}")
     
     start = position + len(to_search)
-    substring = content[start:start+offset].strip()
-    match = re.search("[0-9]+", substring).span()
-    return substring[match[0]:match[1]]
+    field_value = content[start:start+offset].strip()
+    substring = lib.regex_span("[0-9]+", field_value)
+    if substring is None: raise RuntimeError(f"Couldn't find integer in field value '{field_value}'")
+    return substring
 
 def parse_content(content, fields):
     ret = {}

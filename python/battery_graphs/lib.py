@@ -90,3 +90,12 @@ def dict_prettify(dictionary):
 def order_dict(d):
     return OrderedDict(
     sorted(d.items(), key = lambda x:datetime.strptime(x[0], '%Y-%m-%d')) )
+
+def regex_span(regex_expr, string):
+    match = re.search(regex_expr, string)
+    if match is None:
+        return None
+    else:
+        match = match.span()
+    start, end = match[0], match[1]
+    return string[start:end]
