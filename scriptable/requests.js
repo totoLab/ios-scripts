@@ -3,8 +3,8 @@
 // icon-color: green; icon-glyph: file-code;
 
 // https://gist.github.com/yoav-lavi/11e6b9e8e5b807ff20ddbb7d9d515229
-module.exports = {
-  post: async ({ url, body, headers = {} }) => {
+
+const post = async ({ url, body, headers = {} }) => {
     const request = new Request(url);
     request.body = JSON.stringify(body);
     request.method = methods.post;
@@ -13,8 +13,9 @@ module.exports = {
       ...headers
     };
     return await request.loadJSON();
-  },
-  put: async ({ url, body, headers = {} }) => {
+}
+
+const put = async ({ url, body, headers = {} }) => {
     const request = new Request(url);
     request.body = JSON.stringify(body);
     request.method = methods.put;
@@ -23,8 +24,9 @@ module.exports = {
       ...headers
     };
     return await request.loadJSON();
-  },
-  get: async ({ url, headers = {} }) => {
+}
+
+const get = async ({ url, headers = {} }) => {
     const request = new Request(url);
     request.method = methods.get;
     request.headers = {
@@ -32,16 +34,17 @@ module.exports = {
       ...headers
     };
     return await request.loadJSON();
-  }
-};
+}
 
 const defaultHeaders = {
-  Accept: "application/json",
-  "Content-Type": "application/json"
+	"Accept": "application/json",
+	"Content-Type": "application/json"
 }
 
 const methods = {
   get: "GET",
   post: "POST",
   put: "PUT"
-};
+}
+
+module.exports = {post, put, get}
