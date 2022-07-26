@@ -49,6 +49,13 @@ const readContentFrom = (path, src) => {
   		return new Error("File doesn't exists");
   	}
 }
+
+const readJsonFrom = (path, src) => {
+    return JSON.parse(readContentFrom(path, src));
 }
 
-module.exports = {showOnIOS, showAndCopyOnIOS, antiBasename, basename, extractPathFromArgs, readContentFrom};
+const cleanAndreadJsonFrom = (path, src) => {
+	let content = readContentFrom(path, src);
+	let cleanContent = removeComments(content);
+	return JSON.parse(cleanContent);
+}
