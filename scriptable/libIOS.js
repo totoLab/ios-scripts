@@ -33,8 +33,22 @@ const extractPathFromArgs = (arg) => {
     return path;
 }
 
-const readContentFrom = (path) => {  
-    return FileManager.local().readString(path);
+const readContentFrom = (path, src) => {
+  	let fm;
+    if (src == "local") {
+    	fm = FileManager.local();
+    } else if (src == "icloud") {
+    	fm = FileManager.iCloud();
+    } else {
+    	return new Error("File Manager type has not been specified correctly.");
+    }
+    
+    if (fm.fileExists(path)) {
+    	return fm.readString(path);
+  	} else {
+  		return new Error("File doesn't exists");
+  	}
+}
 }
 
 module.exports = {showOnIOS, showAndCopyOnIOS, antiBasename, basename, extractPathFromArgs, readContentFrom};
