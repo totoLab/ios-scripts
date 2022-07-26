@@ -64,3 +64,5 @@ const cleanAndreadJsonFrom = (path, src) => {
 	let cleanContent = removeComments(content);
 	return JSON.parse(cleanContent);
 }
+
+module.exports = {showOnIOS, showAndCopyOnIOS, menuIOS, antiBasename, basename, removeComments, extractPathFromArgs, readContentFrom, readJsonFrom, cleanAndreadJsonFrom};
