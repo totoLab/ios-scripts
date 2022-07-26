@@ -28,6 +28,11 @@ const basename = (path) => {
     return path.substring(path.lastIndexOf("/") + 1);
 }
 
+const removeComments = (string) => {
+	let jsCommentsRegex = /[^\S\r\n]*\/\/(.*)/gm;
+	return string.replace(jsCommentsRegex, "");
+}
+
 const extractPathFromArgs = (arg) => {
     path = JSON.parse(JSON.stringify(arg.fileURLs[0]));    
     return path;
