@@ -19,6 +19,13 @@ const showAndCopyOnIOS = async (title, text) => {
     }
 }
 
+const menuIOS = async (list) => {
+    alert = new Alert();
+    list.forEach(element => {
+        alert.addAction(element);
+    });
+    return await alert.presentSheet();
+}
 
 const antiBasename = (path) => {
     return path.substring(0, path.lastIndexOf("/"))
