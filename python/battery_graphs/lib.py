@@ -23,7 +23,7 @@ def extract_config(config_file):
         for line in f.readlines():
             line = line.strip()
             
-            match = re.search("\[([[a-z]|[A-Z])+\]", line)
+            match = re.search("\[[a-zA-Z]+\]", line)
             if match is not None:
                 start, end = match.span()
                 current_config = line[start+1:end-1].strip()
